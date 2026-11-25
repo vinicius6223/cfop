@@ -85,6 +85,7 @@
     </div>
 
     <div class="flex flex-wrap items-center gap-2">
+      <button id="btn-bt-cube" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0A0A0D] border border-zinc-700 text-zinc-200 hover:border-red-500/60 transition flex items-center gap-1.5"><span id="bt-dot" class="w-2 h-2 rounded-full bg-zinc-500"></span><span id="bt-btn-label">Cubo BT</span></button>
       <button id="btn-profile-pill" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#0A0A0D] border border-zinc-700 text-zinc-200 hover:border-red-500/60 transition">+ Criar perfil local</button>
       <div id="animator-cam-controls" class="flex items-center gap-1.5">
         <button id="btn-cam-default" class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 transition">Vista Padrão</button>
@@ -100,14 +101,14 @@
   <div id="view-animator" class="flex flex-col gap-5">
     <section class="flex flex-col gap-3">
       <div class="flex flex-wrap items-center gap-2">
-        <button data-cat="2look-pll" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-red-600 text-white red-glow transition">2-Look PLL (6)</button>
-        <button data-cat="2look-oll" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">2-Look OLL (10)</button>
+        <button data-cat="2look-oll" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-red-600 text-white red-glow transition">2-Look OLL (10)</button>
+        <button data-cat="2look-pll" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">2-Look PLL (6)</button>
         <button data-cat="f2l" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">F2L Intuitivo (12)</button>
         <button data-cat="triggers" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Triggers (8)</button>
         <span class="hidden sm:inline-block w-px h-5 bg-zinc-800 mx-1"></span>
         <button data-cat="full-f2l" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Full F2L (41)</button>
-        <button data-cat="full-pll" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Full PLL (21)</button>
         <button data-cat="full-oll" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Full OLL (57)</button>
+        <button data-cat="full-pll" class="cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Full PLL (21)</button>
       </div>
 
       <div id="full-filter-bar" class="hidden flex-wrap items-center justify-between gap-2 bg-[#0A0A0D] border border-zinc-800 rounded-xl px-3 py-2">
@@ -478,6 +479,12 @@
       </div>
 
       <div id="tm-touch-pad" class="rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-6 sm:p-10 flex flex-col items-center justify-center min-h-[280px] xl:min-h-[340px] select-none transition">
+        <div id="tm-bt-bar" class="hidden mb-3 px-3 py-1.5 rounded-full bg-black border border-zinc-800 text-xs flex flex-wrap items-center gap-2.5">
+          <span class="flex items-center gap-1.5 text-green-400 font-semibold"><span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>GAN BT</span>
+          <span id="tm-bt-moves" class="mono text-zinc-300">0 movs</span>
+          <span id="tm-bt-tps" class="mono text-red-400">0.0 TPS</span>
+          <span id="tm-bt-last" class="mono text-zinc-400">—</span>
+        </div>
         <div id="tm-status-label" class="text-xs font-medium text-zinc-400 mb-2">Segure Espaço para iniciar (toque no celular)</div>
         <div id="tm-display" class="mono text-6xl sm:text-7xl xl:text-8xl font-bold tracking-tight text-white">0.00</div>
         <div id="tm-typing-wrap" class="hidden mt-5 flex items-center gap-2">
@@ -864,6 +871,62 @@
     </div>
   </div>
 
+</div>
+
+<!-- Smart Cube Bluetooth Modal -->
+<div id="bt-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm items-center justify-center p-4">
+  <div class="w-full max-w-md rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-5 flex flex-col gap-4 shadow-2xl">
+    <div class="flex items-center justify-between gap-3 border-b border-zinc-800 pb-3">
+      <div>
+        <h3 class="text-base font-bold text-white">Cubo Smart Bluetooth (GAN)</h3>
+        <p class="text-xs text-zinc-400 mt-0.5">Compatível com GAN Gen2, Gen3 e Gen4 (GAN i4 / 14 ui / Carry 2).</p>
+      </div>
+      <button id="btn-bt-close" type="button" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#121217] text-zinc-400 hover:text-white border border-zinc-800">✕</button>
+    </div>
+
+    <div id="bt-compat-warn" class="hidden rounded-xl bg-red-500/10 border border-red-500/30 p-3 text-xs text-red-300">
+      Web Bluetooth não está disponível neste navegador. Use <strong>Chrome</strong> ou <strong>Edge</strong> (desktop ou Android) via HTTPS.
+    </div>
+
+    <div class="flex flex-col gap-1.5">
+      <label for="bt-mac-input" class="text-xs font-medium text-zinc-300">Endereço MAC do cubo (opcional / salvo localmente)</label>
+      <input id="bt-mac-input" type="text" placeholder="Ex: AB:CD:EF:12:34:56" class="bg-black border border-zinc-800 rounded-xl px-3 py-2 text-xs mono text-white focus:outline-none focus:border-red-500" />
+      <p class="text-[11px] text-zinc-500 leading-relaxed">
+        Cubos GAN criptografam o BLE usando o MAC. Se o Chrome pedir o MAC, pegue no app CubeStation ou ative <span class="mono text-zinc-400">chrome://flags/#enable-web-bluetooth-new-permissions-backend</span>.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-2 text-xs">
+      <div class="rounded-xl bg-black border border-zinc-800 p-2.5"><div class="text-[11px] text-zinc-500">Status</div><div id="bt-info-status" class="font-semibold text-zinc-200 mt-0.5 truncate">Desconectado</div></div>
+      <div class="rounded-xl bg-black border border-zinc-800 p-2.5"><div class="text-[11px] text-zinc-500">Bateria</div><div id="bt-info-bat" class="mono font-semibold text-white mt-0.5">—</div></div>
+      <div class="rounded-xl bg-black border border-zinc-800 p-2.5"><div class="text-[11px] text-zinc-500">Último giro</div><div id="bt-info-move" class="mono font-semibold text-red-400 mt-0.5">—</div></div>
+    </div>
+
+    <div class="flex flex-col gap-2 text-xs text-zinc-300">
+      <label class="flex items-center justify-between bg-black border border-zinc-800 rounded-xl px-3 py-2 cursor-pointer">
+        <span>Auto-Start e Auto-Stop no Timer</span>
+        <input id="bt-opt-timer" type="checkbox" checked class="accent-red-500 w-4 h-4" />
+      </label>
+      <label class="flex items-center justify-between bg-black border border-zinc-800 rounded-xl px-3 py-2 cursor-pointer">
+        <span>Espelhar giros no Visualizador 3D</span>
+        <input id="bt-opt-mirror" type="checkbox" checked class="accent-red-500 w-4 h-4" />
+      </label>
+      <label class="flex items-center justify-between bg-black border border-zinc-800 rounded-xl px-3 py-2 cursor-pointer">
+        <span>Espelhar giroscópio 360° no Visualizador 3D</span>
+        <input id="bt-opt-gyro" type="checkbox" checked class="accent-red-500 w-4 h-4" />
+      </label>
+    </div>
+
+    <div id="bt-error-msg" class="hidden text-xs text-red-400 bg-red-500/10 border border-red-500/30 rounded-xl px-3 py-2"></div>
+
+    <div class="flex flex-wrap items-center gap-2 pt-1">
+      <button id="btn-bt-connect" type="button" class="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition red-glow">Conectar Cubo GAN</button>
+      <button id="btn-bt-disconnect" type="button" class="hidden flex-1 py-2.5 px-4 rounded-xl bg-[#121217] hover:bg-zinc-800 text-red-400 border border-red-500/40 text-xs font-bold transition">Desconectar</button>
+      <button id="btn-bt-sync" type="button" class="hidden py-2.5 px-3 rounded-xl bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 text-xs font-semibold transition" title="Sincronizar estado atual">↻ Sync</button>
+      <button id="btn-bt-gyro-zero" type="button" class="hidden py-2.5 px-3 rounded-xl bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 text-xs font-semibold transition" title="Definir posição atual como frente">⌖ Calibrar Gyro</button>
+      <button id="btn-bt-reset-state" type="button" class="hidden py-2.5 px-3 rounded-xl bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 text-xs font-semibold transition" title="Marcar estado físico atual como resolvido">✓ Resolvido</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1560,10 +1623,10 @@ function applyMoveInstant(token) {
 // ============================================================
 // 5. VISUALIZER PLAYBACK & ALTERNATIVE ALGORITHMS
 // ============================================================
-let currentCat = '2look-pll';
+let currentCat = '2look-oll';
 let currentGroup = 'Todos';
 let searchTerm = '';
-let currentAlg = ALGORITHMS[0];
+let currentAlg = ALGORITHMS.find(a => a.cat === '2look-oll') || ALGORITHMS[0];
 let currentAltIdx = 0;
 let currentStep = 0;
 let isPlaying = false;
@@ -1594,16 +1657,23 @@ function cancelActiveAnim() {
   }
 }
 
+const glowShellGeo = new THREE.BoxGeometry(1.045, 1.045, 1.045);
+const glowEdgeGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(0.975, 0.975, 0.975));
+
 function clearArrowsAndGlow() {
   while (arrowGroup.children.length > 0) arrowGroup.remove(arrowGroup.children[0]);
   highlightedCubies = [];
   cubies.forEach(c => {
-    c.children.forEach(ch => {
-      if (ch.material && ch.material.emissive) {
+    for (let i = c.children.length - 1; i >= 0; i--) {
+      const ch = c.children[i];
+      if (ch.userData && ch.userData.isGlowHelper) {
+        c.remove(ch);
+        if (ch.material) ch.material.dispose();
+      } else if (ch.material && ch.material.emissive) {
         ch.material.emissive.setHex(0x000000);
         ch.material.emissiveIntensity = 0;
       }
-    });
+    }
   });
 }
 
@@ -1651,29 +1721,70 @@ function addDestinationArrow(fromVec, toVec, colorHex, doubleHeaded) {
   arrowGroup.add(grp);
 }
 
+let initialTargetHomeKeys = new Set();
+const homeKeyOf = v => `${Math.round(v.x)},${Math.round(v.y)},${Math.round(v.z)}`;
+
+function computeInitialArrowTargets() {
+  const keys = new Set();
+  const isF2L = currentAlg.cat === 'f2l' || currentAlg.cat === 'full-f2l';
+  const isLastLayer = currentAlg.cat === '2look-pll' || currentAlg.cat === 'full-pll' || currentAlg.cat === '2look-oll' || currentAlg.cat === 'full-oll';
+  const targetSlotX = 1, targetSlotZ = currentAlg.back ? -1 : 1;
+  cubies.forEach(c => {
+    const hp = c.userData.homePos;
+    const isCenter = (Math.abs(Math.round(hp.x)) + Math.abs(Math.round(hp.y)) + Math.abs(Math.round(hp.z))) <= 1;
+    if (isCenter) return;
+    const isTargetF2L = (Math.round(hp.x) === targetSlotX && Math.round(hp.z) === targetSlotZ && (Math.round(hp.y) === -1 || Math.round(hp.y) === 0));
+    if (isF2L && !isTargetF2L) return;
+    if (isLastLayer && Math.round(hp.y) !== 1) return;
+    if (c.position.distanceTo(hp) > 0.35) {
+      keys.add(homeKeyOf(hp));
+    }
+  });
+  return keys;
+}
+
 function refreshPieceHighlightsAndArrows() {
   clearArrowsAndGlow();
   if (activeView !== 'animator' || (!highlightEnabled && !arrowsEnabled)) return;
   const isF2L = currentAlg.cat === 'f2l' || currentAlg.cat === 'full-f2l';
-  const targetSlotX = 1, targetSlotZ = currentAlg.back ? -1 : 1;
+  const showArrowsNow = arrowsEnabled && currentStep === 0 && !animState;
   const movePairs = [];
   cubies.forEach(c => {
     const hp = c.userData.homePos;
-    const isTargetF2L = (Math.round(hp.x) === targetSlotX && Math.round(hp.z) === targetSlotZ && (Math.round(hp.y) === -1 || Math.round(hp.y) === 0));
-    if (isF2L && !isTargetF2L) return;
-    const posChanged = c.position.distanceTo(hp) > 0.35;
-    const orientChanged = Math.abs(c.quaternion.dot(c.userData.homeQuat)) < 0.98;
-    if (posChanged || orientChanged || (isF2L && isTargetF2L)) {
-      if (highlightEnabled) highlightedCubies.push({ cubie: c });
-      if (arrowsEnabled && posChanged) movePairs.push({ from: c.position.clone(), to: hp.clone() });
+    if (!initialTargetHomeKeys.has(homeKeyOf(hp))) return;
+    if (highlightEnabled) {
+      const auraMat = new THREE.MeshBasicMaterial({
+        color: 0xFFFFFF,
+        transparent: true,
+        opacity: 0.10,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+      const auraMesh = new THREE.Mesh(glowShellGeo, auraMat);
+      auraMesh.userData.isGlowHelper = true;
+      c.add(auraMesh);
+
+      const rimMat = new THREE.LineBasicMaterial({
+        color: 0xFFFFFF,
+        transparent: true,
+        opacity: 0.50
+      });
+      const rimMesh = new THREE.LineSegments(glowEdgeGeo, rimMat);
+      rimMesh.userData.isGlowHelper = true;
+      c.add(rimMesh);
+
+      highlightedCubies.push({ cubie: c, auraMat, rimMat });
+    }
+    if (showArrowsNow && c.position.distanceTo(hp) > 0.35) {
+      movePairs.push({ from: c.position.clone(), to: hp.clone() });
     }
   });
+  if (!showArrowsNow) return;
   const drawn = new Set();
-  const vk = v => `${Math.round(v.x)},${Math.round(v.y)},${Math.round(v.z)}`;
   movePairs.forEach(mp => {
     const isRecip = movePairs.some(o => o !== mp && o.from.distanceTo(mp.to) < 0.35 && o.to.distanceTo(mp.from) < 0.35);
     if (isRecip) {
-      const k1 = vk(mp.from), k2 = vk(mp.to);
+      const k1 = homeKeyOf(mp.from), k2 = homeKeyOf(mp.to);
       const pk = k1 < k2 ? k1 + '|' + k2 : k2 + '|' + k1;
       if (drawn.has(pk)) return;
       drawn.add(pk);
@@ -1689,6 +1800,7 @@ function setupCubeAtStep(stepIndex) {
   buildSolvedCube();
   const mvs = getActiveMoves();
   [...mvs].reverse().map(invertToken).forEach(applyMoveInstant);
+  initialTargetHomeKeys = computeInitialArrowTargets();
   for (let i = 0; i < stepIndex; i++) applyMoveInstant(mvs[i]);
   currentStep = stepIndex;
   updateAnimatorUI(stepIndex > 0 ? mvs[stepIndex - 1] : null);
@@ -1716,6 +1828,7 @@ function stepForward(fromPlay = false) {
   }
   const tok = mvs[currentStep];
   currentStep++;
+  while (arrowGroup.children.length > 0) arrowGroup.remove(arrowGroup.children[0]);
   updateAnimatorUI(tok);
   animateMove(tok, () => {
     if (isPlaying) {
@@ -3392,10 +3505,13 @@ function animate(now) {
     }
   }
   if (activeView === 'animator' && highlightEnabled && highlightedCubies.length > 0) {
-    const pulse = 0.08 + 0.32 * (0.5 + 0.5 * Math.sin(now * 0.0055));
-    highlightedCubies.forEach(({ cubie }) => {
+    const wave = 0.5 + 0.5 * Math.sin(now * 0.005);
+    const pulse = 0.10 + 0.28 * wave;
+    highlightedCubies.forEach(({ cubie, auraMat, rimMat }) => {
+      if (auraMat) auraMat.opacity = 0.06 + 0.10 * wave;
+      if (rimMat) rimMat.opacity = 0.30 + 0.32 * wave;
       cubie.children.forEach((ch, idx) => {
-        if (idx > 0 && ch.material && ch.material.emissive && ch.material.color) {
+        if (idx > 0 && !ch.userData?.isGlowHelper && ch.material && ch.material.emissive && ch.material.color) {
           ch.material.emissive.copy(ch.material.color);
           ch.material.emissiveIntensity = pulse;
         }
@@ -3404,6 +3520,248 @@ function animate(now) {
   }
   renderer.render(scene, camera);
 }
+
+
+// ============================================================
+// 11. GAN SMART CUBE BLUETOOTH (Gen2 / Gen3 / Gen4)
+// ============================================================
+const BT_MAC_KEY = 'cfop_coach_bt_mac_v1';
+let btConn = null;
+let btSub = null;
+let btBattery = null;
+let btSolveMoves = 0;
+let btFacelets = 'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB'.split('');
+let btLastGyroQuat = null;
+let btGyroOffset = new THREE.Quaternion();
+
+try {
+  const savedMac = localStorage.getItem(BT_MAC_KEY);
+  if (savedMac) document.getElementById('bt-mac-input').value = savedMac;
+} catch (e) {}
+
+function btRotCw(f) {
+  return [f[6], f[3], f[0], f[7], f[4], f[1], f[8], f[5], f[2]];
+}
+
+function btApplyMoveFacelets(arr, tok) {
+  const base = tok[0];
+  const cnt = tok.endsWith('2') ? 2 : (tok.endsWith("'") ? 3 : 1);
+  // URFDLB offsets: U=0, R=9, F=18, D=27, L=36, B=45
+  let s = arr.slice();
+  for (let k = 0; k < cnt; k++) {
+    const u = s.slice(0, 9), r = s.slice(9, 18), f = s.slice(18, 27), d = s.slice(27, 36), l = s.slice(36, 45), b = s.slice(45, 54);
+    if (base === 'U') {
+      const nu = btRotCw(u); nu.forEach((v, i) => s[i] = v);
+      [0,1,2].forEach(i => { s[18+i]=r[i]; s[9+i]=b[i]; s[45+i]=l[i]; s[36+i]=f[i]; });
+    } else if (base === 'D') {
+      const nd = btRotCw(d); nd.forEach((v, i) => s[27+i] = v);
+      [6,7,8].forEach(i => { s[18+i]=l[i]; s[36+i]=b[i]; s[45+i]=r[i]; s[9+i]=f[i]; });
+    } else if (base === 'R') {
+      const nr = btRotCw(r); nr.forEach((v, i) => s[9+i] = v);
+      s[2]=f[2]; s[5]=f[5]; s[8]=f[8];
+      s[18+2]=d[2]; s[18+5]=d[5]; s[18+8]=d[8];
+      s[27+2]=b[6]; s[27+5]=b[3]; s[27+8]=b[0];
+      s[45+6]=u[2]; s[45+3]=u[5]; s[45+0]=u[8];
+    } else if (base === 'L') {
+      const nl = btRotCw(l); nl.forEach((v, i) => s[36+i] = v);
+      s[0]=b[8]; s[3]=b[5]; s[6]=b[2];
+      s[45+8]=d[0]; s[45+5]=d[3]; s[45+2]=d[6];
+      s[27+0]=f[0]; s[27+3]=f[3]; s[27+6]=f[6];
+      s[18+0]=u[0]; s[18+3]=u[3]; s[18+6]=u[6];
+    } else if (base === 'F') {
+      const nf = btRotCw(f); nf.forEach((v, i) => s[18+i] = v);
+      s[6]=l[8]; s[7]=l[5]; s[8]=l[2];
+      s[9+0]=u[6]; s[9+3]=u[7]; s[9+6]=u[8];
+      s[27+2]=r[0]; s[27+1]=r[3]; s[27+0]=r[6];
+      s[36+8]=d[2]; s[36+5]=d[1]; s[36+2]=d[0];
+    } else if (base === 'B') {
+      const nb = btRotCw(b); nb.forEach((v, i) => s[45+i] = v);
+      s[2]=r[8]; s[1]=r[5]; s[0]=r[2];
+      s[36+0]=u[2]; s[36+3]=u[1]; s[36+6]=u[0];
+      s[27+6]=l[0]; s[27+7]=l[3]; s[27+8]=l[6];
+      s[9+8]=d[6]; s[9+5]=d[7]; s[9+2]=d[8];
+    }
+  }
+  return s;
+}
+
+function isBtFaceletsSolved(arr) {
+  for (let off = 0; off < 54; off += 9) {
+    const c = arr[off + 4];
+    for (let i = 0; i < 9; i++) if (arr[off + i] !== c) return false;
+  }
+  return true;
+}
+
+function updateBtUI(statusText, errText = '') {
+  const connected = !!btConn;
+  const dot = document.getElementById('bt-dot');
+  const lbl = document.getElementById('bt-btn-label');
+  const stEl = document.getElementById('bt-info-status');
+  const batEl = document.getElementById('bt-info-bat');
+  const errEl = document.getElementById('bt-error-msg');
+  const tmBar = document.getElementById('tm-bt-bar');
+
+  dot.className = connected ? 'w-2 h-2 rounded-full bg-green-400 animate-pulse' : 'w-2 h-2 rounded-full bg-zinc-500';
+  lbl.textContent = connected ? (btBattery !== null ? `GAN ${btBattery}%` : 'GAN BT') : 'Cubo BT';
+  stEl.textContent = statusText || (connected ? 'Conectado' : 'Desconectado');
+  stEl.className = connected ? 'font-semibold text-green-400 mt-0.5 truncate' : 'font-semibold text-zinc-200 mt-0.5 truncate';
+  batEl.textContent = btBattery !== null ? btBattery + '%' : '—';
+
+  document.getElementById('btn-bt-connect').classList.toggle('hidden', connected);
+  document.getElementById('btn-bt-disconnect').classList.toggle('hidden', !connected);
+  document.getElementById('btn-bt-sync').classList.toggle('hidden', !connected);
+  document.getElementById('btn-bt-gyro-zero').classList.toggle('hidden', !connected);
+  document.getElementById('btn-bt-reset-state').classList.toggle('hidden', !connected);
+  if (tmBar) tmBar.classList.toggle('hidden', !connected);
+
+  if (errText) {
+    errEl.textContent = errText;
+    errEl.classList.remove('hidden');
+  } else {
+    errEl.classList.add('hidden');
+  }
+}
+
+function updateTimerBtTelemetry(lastMove) {
+  const mvEl = document.getElementById('tm-bt-moves');
+  const tpsEl = document.getElementById('tm-bt-tps');
+  const lstEl = document.getElementById('tm-bt-last');
+  if (mvEl) mvEl.textContent = `${btSolveMoves} movs`;
+  if (lstEl && lastMove) lstEl.textContent = lastMove;
+  if (tpsEl && tmState === 'running') {
+    const sec = Math.max(0.1, (performance.now() - tmStartPerf) / 1000);
+    tpsEl.textContent = (btSolveMoves / sec).toFixed(1) + ' TPS';
+  }
+}
+
+function handleGanEvent(ev) {
+  if (!ev) return;
+  if (ev.type === 'BATTERY') {
+    btBattery = ev.batteryLevel;
+    updateBtUI('Conectado');
+  } else if (ev.type === 'FACELETS' && typeof ev.facelets === 'string' && ev.facelets.length === 54) {
+    btFacelets = ev.facelets.split('');
+    if (tmState === 'running' && document.getElementById('bt-opt-timer').checked && isBtFaceletsSolved(btFacelets)) {
+      stopRunningTimer();
+    }
+  } else if (ev.type === 'MOVE' && ev.move) {
+    const mv = String(ev.move).trim();
+    document.getElementById('bt-info-move').textContent = mv;
+    btFacelets = btApplyMoveFacelets(btFacelets, mv);
+
+    if (activeView === 'animator' && document.getElementById('bt-opt-mirror').checked) {
+      applyMoveInstant(mv);
+      refreshPieceHighlightsAndArrows();
+    }
+
+    if (activeView === 'timer' && document.getElementById('bt-opt-timer').checked) {
+      if (tmState === 'idle' || tmState === 'inspecting') {
+        btSolveMoves = 1;
+        startRunningTimer();
+        updateTimerBtTelemetry(mv);
+      } else if (tmState === 'running') {
+        btSolveMoves++;
+        updateTimerBtTelemetry(mv);
+        if (isBtFaceletsSolved(btFacelets)) {
+          stopRunningTimer();
+        }
+      }
+    }
+  } else if (ev.type === 'GYRO' && ev.quaternion) {
+    const q = ev.quaternion;
+    const rawQ = new THREE.Quaternion(q.x, q.z, -q.y, q.w).normalize();
+    btLastGyroQuat = rawQ;
+    if (activeView === 'animator' && document.getElementById('bt-opt-gyro').checked) {
+      cubeRoot.quaternion.copy(btGyroOffset).multiply(rawQ);
+    }
+  } else if (ev.type === 'DISCONNECT') {
+    disconnectGanCube();
+  }
+}
+
+async function connectGanCubeUI() {
+  if (!navigator.bluetooth) {
+    document.getElementById('bt-compat-warn').classList.remove('hidden');
+    updateBtUI('Sem suporte', 'Web Bluetooth indisponível neste navegador.');
+    return;
+  }
+  const macInput = document.getElementById('bt-mac-input').value.trim();
+  if (macInput) {
+    try { localStorage.setItem(BT_MAC_KEY, macInput); } catch (e) {}
+  }
+  updateBtUI('Conectando...');
+  try {
+    let mod;
+    try {
+      mod = await import('https://esm.sh/gan-web-bluetooth');
+    } catch (e1) {
+      mod = await import('https://cdn.jsdelivr.net/npm/gan-web-bluetooth/+esm');
+    }
+    const macProvider = async (_device, isFallbackCall) => {
+      const saved = document.getElementById('bt-mac-input').value.trim() || localStorage.getItem(BT_MAC_KEY) || '';
+      if (saved) return saved;
+      if (isFallbackCall) {
+        const inp = document.getElementById('bt-mac-input');
+        if (inp) inp.focus();
+        updateBtUI('MAC necessário', 'O navegador bloqueou a leitura automática do MAC. Cole o endereço MAC do cubo acima e clique em Conectar.');
+      }
+      return null;
+    };
+    btConn = await mod.connectGanCube(macProvider);
+    btSub = btConn.events$.subscribe(handleGanEvent);
+    updateBtUI('Conectado');
+    try {
+      await btConn.sendCubeCommand({ type: 'REQUEST_FACELETS' });
+      await btConn.sendCubeCommand({ type: 'REQUEST_BATTERY' });
+    } catch (e) {}
+  } catch (err) {
+    btConn = null;
+    updateBtUI('Desconectado', err && err.message ? err.message : 'Falha ao conectar ao cubo Bluetooth.');
+  }
+}
+
+function disconnectGanCube() {
+  if (btSub) { try { btSub.unsubscribe(); } catch (e) {} btSub = null; }
+  if (btConn) { try { btConn.disconnect(); } catch (e) {} btConn = null; }
+  btBattery = null;
+  btLastGyroQuat = null;
+  cubeRoot.quaternion.identity();
+  updateBtUI('Desconectado');
+}
+
+document.getElementById('btn-bt-cube').addEventListener('click', () => {
+  const m = document.getElementById('bt-modal');
+  if (!navigator.bluetooth) document.getElementById('bt-compat-warn').classList.remove('hidden');
+  m.classList.remove('hidden'); m.classList.add('flex');
+});
+document.getElementById('btn-bt-close').addEventListener('click', () => {
+  const m = document.getElementById('bt-modal');
+  m.classList.add('hidden'); m.classList.remove('flex');
+});
+document.getElementById('bt-modal').addEventListener('click', e => {
+  if (e.target.id === 'bt-modal') { e.target.classList.add('hidden'); e.target.classList.remove('flex'); }
+});
+document.getElementById('btn-bt-connect').addEventListener('click', connectGanCubeUI);
+document.getElementById('btn-bt-disconnect').addEventListener('click', disconnectGanCube);
+document.getElementById('btn-bt-sync').addEventListener('click', async () => {
+  if (btConn) { try { await btConn.sendCubeCommand({ type: 'REQUEST_FACELETS' }); } catch (e) {} }
+});
+document.getElementById('btn-bt-gyro-zero').addEventListener('click', () => {
+  if (btLastGyroQuat) {
+    btGyroOffset.copy(btLastGyroQuat).invert();
+    if (activeView === 'animator' && document.getElementById('bt-opt-gyro').checked) {
+      cubeRoot.quaternion.identity();
+    }
+  }
+});
+document.getElementById('bt-opt-gyro').addEventListener('change', e => {
+  if (!e.target.checked) cubeRoot.quaternion.identity();
+});
+document.getElementById('btn-bt-reset-state').addEventListener('click', async () => {
+  btFacelets = 'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB'.split('');
+  if (btConn) { try { await btConn.sendCubeCommand({ type: 'REQUEST_RESET' }); } catch (e) {} }
+});
 
 // Init
 updateProfileUI();
