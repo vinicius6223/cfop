@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CFOP Coach</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23000000' stroke='%2327272A' stroke-width='1.5'/%3E%3Crect x='5' y='5' width='6' height='6' rx='1' fill='%23EF4444'/%3E%3Crect x='13' y='5' width='6' height='6' rx='1' fill='%2327272A'/%3E%3Crect x='21' y='5' width='6' height='6' rx='1' fill='%23EF4444'/%3E%3Crect x='5' y='13' width='6' height='6' rx='1' fill='%2327272A'/%3E%3Crect x='13' y='13' width='6' height='6' rx='1' fill='%23EF4444'/%3E%3Crect x='21' y='13' width='6' height='6' rx='1' fill='%2327272A'/%3E%3Crect x='5' y='21' width='6' height='6' rx='1' fill='%23EF4444'/%3E%3Crect x='13' y='21' width='6' height='6' rx='1' fill='%2327272A'/%3E%3Crect x='21' y='21' width='6' height='6' rx='1' fill='%23EF4444'/%3E%3C/svg%3E">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -153,6 +154,11 @@
                 <input id="hand-opacity-slider" type="range" min="15" max="100" step="5" value="50" class="w-16 accent-red-500 cursor-pointer" />
                 <span id="hand-opacity-val" class="mono text-[11px] text-zinc-300 w-8 text-right">50%</span>
               </div>
+              <div class="flex items-center gap-1.5 bg-[#121217] border border-zinc-800 rounded-lg px-2.5 py-1" title="Zoom da câmera 3D">
+                <label for="cam-zoom-slider" class="text-[11px] text-zinc-400 whitespace-nowrap">Zoom</label>
+                <input id="cam-zoom-slider" type="range" min="60" max="140" step="5" value="100" class="w-16 accent-red-500 cursor-pointer" />
+                <span id="cam-zoom-val" class="mono text-[11px] text-zinc-300 w-9 text-right">100%</span>
+              </div>
               <button id="btn-toggle-highlight" type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/40 hover:bg-red-500/25 transition">✨ Brilho: ON</button>
               <button id="btn-toggle-arrows" type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 text-zinc-200 border border-zinc-700 hover:border-zinc-500 transition">➜ Setas: ON</button>
               <select id="speed-select" class="bg-[#121217] border border-zinc-800 text-zinc-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-red-500">
@@ -240,6 +246,7 @@
       </div>
       <div class="flex flex-wrap gap-2">
         <button data-ac="oll-pll" class="ac-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-red-600 text-white red-glow transition">2-Look OLL &amp; PLL + Combos</button>
+        <button data-ac="escape-ref" class="ac-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Rota de Fuga</button>
         <button data-ac="f2l-guide" class="ac-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Setup de F2L (41 → 2)</button>
       </div>
     </div>
@@ -315,7 +322,42 @@
       </div>
     </div>
 
-    <!-- Academy Tab 2: F2L Setup Guide (CubeHead 41 -> 2) -->
+    <!-- Academy Tab 2: Rota de Fuga (Referência Dinâmica) -->
+    <div id="ac-panel-escape-ref" class="hidden flex-col gap-5">
+      <div class="rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-5 flex flex-col gap-3">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h3 class="text-base font-bold text-white">Rota de Fuga — Guia de Referência</h3>
+            <p class="text-xs sm:text-sm text-zinc-400 mt-1 max-w-3xl leading-relaxed">
+              Em vez de decorar todos os 16 casos de 2-Look de uma vez, marque abaixo os algoritmos que você já domina. A tabela calcula automaticamente como usar esses algoritmos (com o giro <span class="mono text-zinc-200">U</span> certo antes) para converter qualquer caso restante em um caso que você já sabe resolver.
+            </p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button id="btn-er-sync-learned" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-700 transition">Importar aprendidos</button>
+            <button id="btn-er-preset-basic" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-700 transition">Básico (Sune, T, Jb, Ua)</button>
+            <button id="btn-er-clear" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/30 hover:bg-red-500/25 transition">Limpar</button>
+          </div>
+        </div>
+
+        <div class="border-t border-zinc-800 pt-3.5 flex flex-col gap-3">
+          <span class="text-xs font-semibold text-zinc-300">Selecione os algoritmos que você já sabe:</span>
+          <div id="er-known-selector" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3"></div>
+        </div>
+      </div>
+
+      <div class="rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-5 flex flex-col gap-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <h3 class="text-sm font-bold text-white">Como manipular os casos que você ainda não sabe</h3>
+            <p class="text-xs text-zinc-400 mt-0.5">Rotas calculadas a partir dos algoritmos selecionados acima (verificadas no simulador 3×3).</p>
+          </div>
+          <span id="er-summary-badge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-500/15 text-red-400 border border-red-500/30"></span>
+        </div>
+        <div id="er-routes-container" class="flex flex-col gap-4"></div>
+      </div>
+    </div>
+
+    <!-- Academy Tab 3: F2L Setup Guide (CubeHead 41 -> 2) -->
     <div id="ac-panel-f2l-guide" class="hidden flex-col gap-5">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div class="rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-5 flex flex-col gap-3">
@@ -2886,12 +2928,208 @@ function switchView(viewName) {
 }
 
 document.querySelectorAll('.nav-view-btn').forEach(b => b.addEventListener('click', () => switchView(b.getAttribute('data-view'))));
+const ESCAPE_KNOWN_KEY = 'cfop_coach_escape_known_v1';
+let escapeKnownSet = new Set(['i-shape', 'l-shape', 'sune', 'antisune', 't-oll', 'jb', 'ua-m']);
+try {
+  const savedKnown = JSON.parse(localStorage.getItem(ESCAPE_KNOWN_KEY) || 'null');
+  if (Array.isArray(savedKnown)) escapeKnownSet = new Set(savedKnown);
+} catch (e) {}
+function saveEscapeKnown() {
+  try { localStorage.setItem(ESCAPE_KNOWN_KEY, JSON.stringify([...escapeKnownSet])); } catch (e) {}
+}
+
+const ER_GROUPS = [
+  { key: 'cruz', label: 'OLL Cruz (3)', ids: ['dot', 'i-shape', 'l-shape'] },
+  { key: 'ocll', label: 'OLL Cantos / OCLL (7)', ids: ['sune', 'antisune', 'h-oll', 'pi', 't-oll', 'u-oll', 'l-oll'] },
+  { key: 'pllc', label: 'PLL Cantos (2)', ids: ['jb', 'y-perm'] },
+  { key: 'plle', label: 'PLL Edges (4)', ids: ['ua-m', 'ub-m', 'h-pll', 'z-pll'] }
+];
+
+const ER_TRANSITIONS = {
+  cruz: {
+    'dot': {
+      'i-shape': [{ pre: '', to: 'l-shape' }],
+      'l-shape': [{ pre: '', to: 'i-shape' }]
+    },
+    'i-shape': { 'l-shape': [{ pre: '', to: 'dot' }] },
+    'l-shape': { 'i-shape': [{ pre: '', to: 'dot' }] }
+  },
+  ocll: {"sune":{"sune":[{"pre":"","to":"SOLVED"},{"pre":"U","to":"u-oll"},{"pre":"U2","to":"l-oll"},{"pre":"U'","to":"t-oll"}],"antisune":[{"pre":"","to":"h-oll"},{"pre":"U","to":"pi"},{"pre":"U2","to":"antisune"}],"h-oll":[{"pre":"","to":"antisune"},{"pre":"U","to":"l-oll"}],"pi":[{"pre":"","to":"antisune"},{"pre":"U","to":"u-oll"},{"pre":"U2","to":"t-oll"}],"t-oll":[{"pre":"U","to":"h-oll"},{"pre":"U2","to":"t-oll"},{"pre":"U'","to":"u-oll"}],"u-oll":[{"pre":"U","to":"t-oll"},{"pre":"U2","to":"u-oll"},{"pre":"U'","to":"h-oll"}],"l-oll":[{"pre":"U","to":"l-oll"},{"pre":"U2","to":"pi"},{"pre":"U'","to":"t-oll"}]},"antisune":{"sune":[{"pre":"","to":"h-oll"},{"pre":"U","to":"pi"},{"pre":"U2","to":"sune"}],"antisune":[{"pre":"","to":"SOLVED"},{"pre":"U","to":"t-oll"},{"pre":"U2","to":"l-oll"},{"pre":"U'","to":"u-oll"}],"h-oll":[{"pre":"","to":"l-oll"},{"pre":"U","to":"sune"}],"pi":[{"pre":"","to":"sune"},{"pre":"U","to":"t-oll"},{"pre":"U2","to":"u-oll"}],"t-oll":[{"pre":"","to":"t-oll"},{"pre":"U","to":"u-oll"},{"pre":"U2","to":"h-oll"}],"u-oll":[{"pre":"","to":"u-oll"},{"pre":"U2","to":"h-oll"},{"pre":"U'","to":"t-oll"}],"l-oll":[{"pre":"U","to":"l-oll"},{"pre":"U2","to":"pi"},{"pre":"U'","to":"t-oll"}]},"h-oll":{"sune":[{"pre":"","to":"sune"},{"pre":"U","to":"l-oll"}],"antisune":[{"pre":"","to":"l-oll"},{"pre":"U","to":"antisune"}],"h-oll":[{"pre":"","to":"SOLVED"}],"pi":[{"pre":"","to":"t-oll"},{"pre":"U","to":"u-oll"}],"t-oll":[{"pre":"","to":"pi"},{"pre":"U","to":"l-oll"}],"u-oll":[{"pre":"","to":"pi"},{"pre":"U","to":"l-oll"}],"l-oll":[{"pre":"","to":"antisune"},{"pre":"U","to":"sune"}]},"pi":{"sune":[{"pre":"","to":"sune"},{"pre":"U2","to":"u-oll"},{"pre":"U'","to":"t-oll"}],"antisune":[{"pre":"","to":"antisune"},{"pre":"U2","to":"t-oll"},{"pre":"U'","to":"u-oll"}],"h-oll":[{"pre":"","to":"u-oll"},{"pre":"U","to":"t-oll"}],"pi":[{"pre":"","to":"SOLVED"},{"pre":"U","to":"l-oll"}],"t-oll":[{"pre":"U","to":"antisune"},{"pre":"U2","to":"l-oll"},{"pre":"U'","to":"sune"}],"u-oll":[{"pre":"","to":"antisune"},{"pre":"U2","to":"sune"},{"pre":"U'","to":"l-oll"}],"l-oll":[{"pre":"U","to":"h-oll"},{"pre":"U2","to":"u-oll"},{"pre":"U'","to":"t-oll"}]},"t-oll":{"sune":[{"pre":"","to":"antisune"},{"pre":"U","to":"l-oll"},{"pre":"U'","to":"pi"}],"antisune":[{"pre":"","to":"l-oll"},{"pre":"U","to":"sune"},{"pre":"U2","to":"pi"}],"h-oll":[{"pre":"","to":"pi"},{"pre":"U","to":"u-oll"}],"pi":[{"pre":"","to":"h-oll"},{"pre":"U","to":"antisune"},{"pre":"U'","to":"sune"}],"t-oll":[{"pre":"","to":"SOLVED"},{"pre":"U","to":"sune"},{"pre":"U2","to":"pi"},{"pre":"U'","to":"antisune"}],"u-oll":[{"pre":"U","to":"pi"},{"pre":"U2","to":"u-oll"},{"pre":"U'","to":"l-oll"}],"l-oll":[{"pre":"","to":"l-oll"},{"pre":"U","to":"u-oll"},{"pre":"U2","to":"sune"},{"pre":"U'","to":"antisune"}]},"u-oll":{"sune":[{"pre":"","to":"antisune"},{"pre":"U","to":"pi"},{"pre":"U'","to":"l-oll"}],"antisune":[{"pre":"","to":"l-oll"},{"pre":"U2","to":"pi"},{"pre":"U'","to":"sune"}],"h-oll":[{"pre":"","to":"pi"},{"pre":"U","to":"t-oll"}],"pi":[{"pre":"","to":"sune"},{"pre":"U2","to":"antisune"},{"pre":"U'","to":"h-oll"}],"t-oll":[{"pre":"U","to":"l-oll"},{"pre":"U2","to":"t-oll"},{"pre":"U'","to":"pi"}],"u-oll":[{"pre":"","to":"SOLVED"},{"pre":"U","to":"antisune"},{"pre":"U2","to":"pi"},{"pre":"U'","to":"sune"}],"l-oll":[{"pre":"U","to":"antisune"},{"pre":"U2","to":"sune"},{"pre":"U'","to":"l-oll"}]},"l-oll":{"sune":[{"pre":"","to":"antisune"},{"pre":"U","to":"u-oll"},{"pre":"U2","to":"h-oll"},{"pre":"U'","to":"t-oll"}],"antisune":[{"pre":"","to":"sune"},{"pre":"U","to":"t-oll"},{"pre":"U2","to":"h-oll"},{"pre":"U'","to":"u-oll"}],"h-oll":[{"pre":"","to":"sune"},{"pre":"U","to":"antisune"}],"pi":[{"pre":"","to":"pi"}],"t-oll":[{"pre":"","to":"t-oll"},{"pre":"U","to":"sune"},{"pre":"U2","to":"antisune"},{"pre":"U'","to":"u-oll"}],"u-oll":[{"pre":"","to":"u-oll"},{"pre":"U","to":"t-oll"},{"pre":"U2","to":"antisune"},{"pre":"U'","to":"sune"}],"l-oll":[{"pre":"","to":"SOLVED"},{"pre":"U","to":"h-oll"},{"pre":"U2","to":"u-oll"},{"pre":"U'","to":"pi"}]}},
+  pllc: {
+    'y-perm': { 'jb': [{ pre: '', to: 'jb' }] }
+  },
+  plle: {
+    'ua-m': {
+      'ub-m': [{ pre: '', to: 'ub-m' }],
+      'z-pll': [{ pre: '', to: 'ub-m' }, { pre: 'U', to: 'ua-m' }]
+    },
+    'ub-m': {
+      'ua-m': [{ pre: '', to: 'ua-m' }],
+      'z-pll': [{ pre: '', to: 'ua-m' }, { pre: 'U', to: 'ub-m' }]
+    },
+    'h-pll': {
+      'ua-m': [{ pre: "U'", to: 'ua-m' }],
+      'ub-m': [{ pre: 'U', to: 'ub-m' }],
+      'z-pll': [{ pre: 'U', to: 'z-pll' }]
+    },
+    'z-pll': {
+      'ua-m': [{ pre: 'U', to: 'ua-m' }, { pre: 'U2', to: 'ub-m' }],
+      'ub-m': [{ pre: '', to: 'ub-m' }, { pre: 'U', to: 'ua-m' }],
+      'h-pll': [{ pre: 'U', to: 'h-pll' }]
+    }
+  }
+};
+
+function getAlgShortName(id) {
+  const a = ALGORITHMS.find(x => x.id === id);
+  return a ? a.name.replace(' (Adjacentes)', '').replace(' (Diagonal)', '') : id;
+}
+
+function findEscapeRoutesForCase(groupKey, caseId, knownIdsInGroup) {
+  const trans = ER_TRANSITIONS[groupKey]?.[caseId] || {};
+  const directOptions = [];
+  for (const k of knownIdsInGroup) {
+    const edges = trans[k] || [];
+    for (const e of edges) {
+      if (e.to === 'SOLVED') directOptions.push({ steps: 1, pre: e.pre, k1: k, to: 'SOLVED' });
+      else if (knownIdsInGroup.includes(e.to)) directOptions.push({ steps: 2, pre: e.pre, k1: k, to: e.to });
+    }
+  }
+  directOptions.sort((a, b) => a.steps - b.steps || (a.pre ? 1 : 0) - (b.pre ? 1 : 0));
+  if (directOptions.length > 0) return directOptions.slice(0, 3);
+
+  for (const k of knownIdsInGroup) {
+    const edges = trans[k] || [];
+    for (const e of edges) {
+      const nextTrans = ER_TRANSITIONS[groupKey]?.[e.to] || {};
+      for (const k2 of knownIdsInGroup) {
+        const hit = (nextTrans[k2] || []).find(ne => knownIdsInGroup.includes(ne.to) || ne.to === 'SOLVED');
+        if (hit) return [{ steps: 3, pre: e.pre, k1: k, mid: e.to, pre2: hit.pre, k2, to: hit.to }];
+      }
+    }
+  }
+  return [];
+}
+
+function renderEscapeRef() {
+  const selEl = document.getElementById('er-known-selector');
+  const outEl = document.getElementById('er-routes-container');
+  const badgeEl = document.getElementById('er-summary-badge');
+  if (!selEl || !outEl) return;
+
+  selEl.innerHTML = '';
+  let totalKnown = 0;
+  ER_GROUPS.forEach(g => {
+    const box = document.createElement('div');
+    box.className = 'rounded-xl bg-black border border-zinc-800 p-3 flex flex-col gap-2';
+    box.innerHTML = `<div class="text-[11px] font-semibold text-zinc-400">${g.label}</div><div class="flex flex-wrap gap-1.5"></div>`;
+    const wrap = box.querySelector('div:last-child');
+    g.ids.forEach(id => {
+      const active = escapeKnownSet.has(id);
+      if (active) totalKnown++;
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = active
+        ? 'px-2.5 py-1 rounded-lg text-xs font-semibold bg-red-600 text-white border border-red-500 transition'
+        : 'px-2.5 py-1 rounded-lg text-xs font-medium bg-[#121217] text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition';
+      btn.textContent = getAlgShortName(id);
+      btn.addEventListener('click', () => {
+        if (escapeKnownSet.has(id)) escapeKnownSet.delete(id);
+        else escapeKnownSet.add(id);
+        saveEscapeKnown();
+        renderEscapeRef();
+      });
+      wrap.appendChild(btn);
+    });
+    selEl.appendChild(box);
+  });
+
+  badgeEl.textContent = `${totalKnown}/16 conhecidos · ${16 - totalKnown} por rota`;
+  outEl.innerHTML = '';
+
+  ER_GROUPS.forEach(g => {
+    const knownInGroup = g.ids.filter(id => escapeKnownSet.has(id));
+    const unknownInGroup = g.ids.filter(id => !escapeKnownSet.has(id));
+    const card = document.createElement('div');
+    card.className = 'rounded-xl bg-black border border-zinc-800 overflow-hidden';
+
+    if (unknownInGroup.length === 0) {
+      card.innerHTML = `<div class="px-4 py-3 flex items-center justify-between"><span class="text-xs font-bold text-white">${g.label}</span><span class="text-xs text-green-400 font-semibold">Todos os casos deste grupo já estão marcados como conhecidos</span></div>`;
+      outEl.appendChild(card);
+      return;
+    }
+
+    let rowsHtml = '';
+    unknownInGroup.forEach(cid => {
+      const routes = findEscapeRoutesForCase(g.key, cid, knownInGroup);
+      let routeHtml = '';
+      if (knownInGroup.length === 0) {
+        routeHtml = '<span class="text-xs text-zinc-500">Marque pelo menos 1 algoritmo deste grupo acima para gerar rotas.</span>';
+      } else if (routes.length === 0) {
+        routeHtml = '<span class="text-xs text-zinc-500">Sem rota direta com os algoritmos marcados neste grupo.</span>';
+      } else {
+        routeHtml = routes.map(r => {
+          const preTag = r.pre ? `<span class="mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-200">${r.pre}</span> + ` : '';
+          if (r.steps === 1) {
+            return `<div class="flex flex-wrap items-center gap-1.5 text-xs"><span class="px-1.5 py-0.5 rounded bg-green-500/15 text-green-400 font-semibold">1 passo</span> ${preTag}<strong class="text-white">${getAlgShortName(r.k1)}</strong> → <span class="text-green-400 font-semibold">Resolvido</span></div>`;
+          }
+          if (r.steps === 2) {
+            return `<div class="flex flex-wrap items-center gap-1.5 text-xs"><span class="px-1.5 py-0.5 rounded bg-red-500/15 text-red-400 font-semibold">2 passos</span> ${preTag}<strong class="text-white">${getAlgShortName(r.k1)}</strong> → cai em <strong class="text-red-400">${getAlgShortName(r.to)}</strong></div>`;
+          }
+          const pre2Tag = r.pre2 ? `<span class="mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-200">${r.pre2}</span> + ` : '';
+          return `<div class="flex flex-wrap items-center gap-1.5 text-xs"><span class="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 font-semibold">3 passos</span> ${preTag}<strong class="text-white">${getAlgShortName(r.k1)}</strong> → ${getAlgShortName(r.mid)} → ${pre2Tag}<strong class="text-white">${getAlgShortName(r.k2)}</strong> → <strong class="text-red-400">${getAlgShortName(r.to)}</strong></div>`;
+        }).join('');
+      }
+      rowsHtml += `
+        <tr class="border-t border-zinc-800/80">
+          <td class="py-3 px-4 font-semibold text-white whitespace-nowrap align-top">${getAlgShortName(cid)}</td>
+          <td class="py-3 px-4 space-y-1.5">${routeHtml}</td>
+          <td class="py-3 px-4 text-right align-top"><button type="button" data-openalg="${cid}" class="er-open-alg px-2.5 py-1 rounded-lg text-xs font-semibold bg-[#121217] hover:bg-red-600 text-red-400 hover:text-white border border-zinc-700 transition">Ver 3D →</button></td>
+        </tr>`;
+    });
+
+    card.innerHTML = `
+      <div class="bg-[#050507] px-4 py-2.5 border-b border-zinc-800 flex items-center justify-between">
+        <span class="text-xs font-bold text-white">${g.label}</span>
+        <span class="text-[11px] text-zinc-400">${unknownInGroup.length} restante(s)</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs sm:text-sm border-collapse">
+          <tbody class="text-zinc-300">${rowsHtml}</tbody>
+        </table>
+      </div>`;
+    card.querySelectorAll('.er-open-alg').forEach(b => b.addEventListener('click', () => openAlgInVisualizer(b.getAttribute('data-openalg'))));
+    outEl.appendChild(card);
+  });
+}
+
+document.getElementById('btn-er-sync-learned').addEventListener('click', () => {
+  const validIds = new Set(ER_GROUPS.flatMap(g => g.ids));
+  escapeKnownSet = new Set([...learnedIds].filter(id => validIds.has(id)));
+  saveEscapeKnown();
+  renderEscapeRef();
+});
+document.getElementById('btn-er-preset-basic').addEventListener('click', () => {
+  escapeKnownSet = new Set(['i-shape', 'l-shape', 'sune', 'antisune', 't-oll', 'jb', 'ua-m']);
+  saveEscapeKnown();
+  renderEscapeRef();
+});
+document.getElementById('btn-er-clear').addEventListener('click', () => {
+  escapeKnownSet = new Set();
+  saveEscapeKnown();
+  renderEscapeRef();
+});
+renderEscapeRef();
+
 document.querySelectorAll('.ac-tab-btn').forEach(b => b.addEventListener('click', () => {
   const t = b.getAttribute('data-ac');
   document.querySelectorAll('.ac-tab-btn').forEach(x => x.className = x.getAttribute('data-ac')===t ? 'ac-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-red-600 text-white red-glow transition' : 'ac-tab-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 transition');
-  document.getElementById('ac-panel-oll-pll').classList.toggle('hidden', t!=='oll-pll');
-  document.getElementById('ac-panel-f2l-guide').classList.toggle('hidden', t!=='f2l-guide');
-  document.getElementById('ac-panel-f2l-guide').classList.toggle('flex', t==='f2l-guide');
+  ['oll-pll', 'escape-ref', 'f2l-guide'].forEach(k => {
+    const el = document.getElementById('ac-panel-' + k);
+    el.classList.toggle('hidden', t !== k);
+    el.classList.toggle('flex', t === k);
+  });
+  if (t === 'escape-ref') renderEscapeRef();
 }));
 document.querySelectorAll('.ac-open-alg').forEach(b => b.addEventListener('click', () => openAlgInVisualizer(b.getAttribute('data-openalg'))));
 
@@ -2938,13 +3176,25 @@ document.getElementById('btn-toggle-arrows').addEventListener('click', () => {
   b.className = arrowsEnabled ? 'px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800 text-zinc-200 border border-zinc-700 transition' : 'px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#121217] text-zinc-500 border border-zinc-800 transition';
   refreshPieceHighlightsAndArrows();
 });
-document.getElementById('btn-cam-default').addEventListener('click', () => { camTheta = 0.62; camPhi = 0.92; camDist = 11.4; updateCamera(); });
-document.getElementById('btn-cam-top').addEventListener('click', () => { camTheta = 0.0; camPhi = 0.28; camDist = 11.4; updateCamera(); });
-document.getElementById('btn-cam-front').addEventListener('click', () => { camTheta = 0.25; camPhi = 1.22; camDist = 11.4; updateCamera(); });
+function applyCamZoomPct(pct) {
+  const z = Math.max(60, Math.min(140, pct || 100));
+  camDist = 11.4 * (100 / z);
+  const sl = document.getElementById('cam-zoom-slider');
+  const lb = document.getElementById('cam-zoom-val');
+  if (sl) sl.value = String(z);
+  if (lb) lb.textContent = z + '%';
+  updateCamera();
+}
+document.getElementById('btn-cam-default').addEventListener('click', () => { camTheta = 0.62; camPhi = 0.92; updateCamera(); });
+document.getElementById('btn-cam-top').addEventListener('click', () => { camTheta = 0.0; camPhi = 0.28; updateCamera(); });
+document.getElementById('btn-cam-front').addEventListener('click', () => { camTheta = 0.25; camPhi = 1.22; updateCamera(); });
 document.getElementById('hand-opacity-slider').addEventListener('input', e => {
   const v = (parseFloat(e.target.value) || 50) / 100;
   applyHandOpacity(v);
   try { localStorage.setItem(HAND_OPACITY_KEY, String(v)); } catch (err) {}
+});
+document.getElementById('cam-zoom-slider').addEventListener('input', e => {
+  applyCamZoomPct(parseInt(e.target.value, 10) || 100);
 });
 document.getElementById('st-tm-session-select').addEventListener('change', e => {
   tmData.activeSession = e.target.value;
@@ -2952,11 +3202,6 @@ document.getElementById('st-tm-session-select').addEventListener('change', e => 
   if (tmInitialized) { renderTimerSessions(); renderTimerStatsAndList(); }
   renderStatsTimerSection();
 });
-renderer.domElement.addEventListener('wheel', e => {
-  e.preventDefault();
-  camDist = Math.max(7.8, Math.min(16.0, camDist + e.deltaY * 0.006));
-  updateCamera();
-}, { passive: false });
 
 // Recognition Guide tabs
 document.querySelectorAll('.guide-cat-btn').forEach(b => b.addEventListener('click', () => {
