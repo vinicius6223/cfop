@@ -2902,7 +2902,7 @@ function generateTimerScramble(){
 function renderTimerScramblePreview(){
   const net=document.getElementById('tm-preview-net'); if(!net)return;
   let st=makeSolved54();
-  if(tmScrambleType==='wca') st=('WWWWWWWWWOOOOOOOOOGGGGGGGGGYYYYYYYYYRRRRRRRRRBBBBBBBBB').split('');
+  if(tmScrambleType==='wca') st=('WWWWWWWWWRRRRRRRRRGGGGGGGGGYYYYYYYYYOOOOOOOOOBBBBBBBBB').split('');
   st=applySeq54(st,tmCurrentScramble);
   const lay=[null,{off:0},null,null,{off:36},{off:18},{off:9},{off:45},null,{off:27},null,null];
   net.innerHTML='';
