@@ -467,8 +467,8 @@
             <button id="btn-tm-next-scramble" type="button" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 transition">↻ Novo Scramble</button>
           </div>
           <div class="flex flex-wrap items-center gap-1.5">
-            <button id="btn-tm-insp" type="button" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-red-500/15 text-red-400 border border-red-500/40 transition">Inspeção 15s: ON</button>
-            <button id="btn-tm-voice" type="button" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-red-500/15 text-red-400 border border-red-500/40 transition">🔊 Vozes 8s/12s: ON</button>
+            <button id="btn-tm-insp" type="button" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-400 border border-zinc-800 transition">Inspeção 15s: OFF</button>
+            <button id="btn-tm-voice" type="button" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-400 border border-zinc-800 transition">🔊 Vozes 8s/12s: OFF</button>
             <button id="btn-tm-inputmode" type="button" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:text-white transition">Modo: Timer</button>
             <button id="btn-tm-focus" type="button" title="UI Reduzida (Shift + R)" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:text-white transition">⛶ UI Reduzida</button>
           </div>
@@ -2873,7 +2873,7 @@ const TM_STORAGE_KEY='cubecoach_cstimer_v1';
 let tmInitialized=false, tmData={activeSession:'3x3 Geral',sessions:{'3x3 Geral':[]}};
 try{const r=JSON.parse(localStorage.getItem(TM_STORAGE_KEY)||'null');if(r&&r.sessions&&Object.keys(r.sessions).length)tmData=r;}catch(e){}
 function saveTmData(){try{localStorage.setItem(TM_STORAGE_KEY,JSON.stringify(tmData));}catch(e){}}
-let tmInspEnabled=true,tmVoiceEnabled=true,tmInputMode='timer',tmFocusMode=false,tmCurrentScramble='',tmScrambleType='wca';
+let tmInspEnabled=false,tmVoiceEnabled=false,tmInputMode='timer',tmFocusMode=false,tmCurrentScramble='',tmScrambleType='wca';
 let tmState='idle',tmHoldTimer=null,tmHoldReady=false,tmInspStart=0,tmInspInterval=null,tmSpoken8=false,tmSpoken12=false,tmStartPerf=0,tmRaf=null,tmPendingPenalty='OK';
 function speakAlert(t){if(!tmVoiceEnabled||typeof speechSynthesis==='undefined')return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='pt-BR';u.rate=1.15;speechSynthesis.speak(u);}catch(e){}}
 function stopVoice(){try{if(typeof speechSynthesis!=='undefined')speechSynthesis.cancel();}catch(e){}}
