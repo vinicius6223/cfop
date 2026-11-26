@@ -77,6 +77,7 @@
         <button data-view="academy" class="nav-view-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition">Academy</button>
         <button data-view="timer" class="nav-view-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition">Timer</button>
         <button data-view="guide" class="nav-view-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition">Reconhecimento</button>
+        <button data-view="assoc" class="nav-view-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition">Associações</button>
         <button data-view="trainer" class="nav-view-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition">Trainer</button>
         <button data-view="scrambles" class="nav-view-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition">Scrambles</button>
         <button data-view="stats" class="nav-view-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-400 hover:text-white transition">Stats</button>
@@ -536,6 +537,34 @@
   </div>
 
   <!-- ========================================================= -->
+  <!-- VIEW 4B: ASSOCIAÇÕES (IMAGEM + ALG + COMENTÁRIO)          -->
+  <!-- ========================================================= -->
+  <div id="view-assoc" class="hidden flex-col gap-5">
+    <div class="rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-5 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <h2 class="text-lg font-bold text-white">Associações Caso ↔ Algoritmo</h2>
+        <p class="text-xs sm:text-sm text-zinc-400 mt-0.5">Imagem do caso, algoritmo lado a lado e campo de anotações pessoais salvo no perfil local (incluído no backup .json).</p>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <input id="assoc-search" type="text" placeholder="Buscar caso ou anotação..." class="bg-black border border-zinc-800 text-zinc-200 text-xs rounded-lg px-3 py-1.5 w-48 focus:outline-none focus:border-red-500" />
+        <button id="btn-assoc-only-notes" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Só com comentário</button>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-1.5">
+      <button data-acat="2look-oll" class="assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-red-600 text-white red-glow transition">2-Look OLL (10)</button>
+      <button data-acat="2look-pll" class="assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">2-Look PLL (6)</button>
+      <button data-acat="f2l" class="assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">F2L Intuitivo (12)</button>
+      <button data-acat="full-oll" class="assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Full OLL (57)</button>
+      <button data-acat="full-pll" class="assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Full PLL (21)</button>
+      <button data-acat="full-f2l" class="assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Full F2L (41)</button>
+      <button data-acat="all" class="assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition">Todos</button>
+    </div>
+
+    <div id="assoc-list" class="grid grid-cols-1 xl:grid-cols-2 gap-3.5"></div>
+  </div>
+
+  <!-- ========================================================= -->
   <!-- VIEW 5: TRAINER                                           -->
   <!-- ========================================================= -->
   <div id="view-trainer" class="hidden grid-cols-1 lg:grid-cols-12 gap-5 items-start">
@@ -546,8 +575,9 @@
           <span id="tr-mode-badge" class="text-xs text-zinc-400">2-Look</span>
         </div>
 
-        <div class="grid grid-cols-3 gap-1 bg-black p-1 rounded-xl border border-zinc-800">
-          <button id="btn-tr-mode-recon" type="button" class="px-2 py-1.5 rounded-lg text-[11px] font-semibold bg-red-600 text-white transition">Reconhecimento</button>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-1 bg-black p-1 rounded-xl border border-zinc-800">
+          <button id="btn-tr-mode-recon" type="button" class="px-2 py-1.5 rounded-lg text-[11px] font-semibold bg-red-600 text-white transition">Reconhec.</button>
+          <button id="btn-tr-mode-drill" type="button" class="px-2 py-1.5 rounded-lg text-[11px] font-semibold text-zinc-400 hover:text-white transition">⚡ Drill BT</button>
           <button id="btn-tr-mode-escape" type="button" class="px-2 py-1.5 rounded-lg text-[11px] font-semibold text-zinc-400 hover:text-white transition">Rota Fuga</button>
           <button id="btn-tr-mode-f2l" type="button" class="px-2 py-1.5 rounded-lg text-[11px] font-semibold text-zinc-400 hover:text-white transition">F2L</button>
         </div>
@@ -599,6 +629,25 @@
           <div id="tr-indiv-f2l" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto scrollbar-thin"></div>
         </div>
 
+        <div id="tr-pool-drill-wrap" class="hidden flex-col gap-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs text-zinc-400">Ordem do Drill</span>
+            <button id="btn-drill-order" type="button" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-red-500/15 text-red-400 border border-red-500/40 transition">🔀 Aleatória</button>
+          </div>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <span class="text-xs text-zinc-400">Mostrar nome/alg na tela</span>
+            <button id="btn-drill-hint" type="button" class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 transition">Oculto (Cego)</button>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button id="btn-drill-preset-oll" type="button" class="px-2 py-1 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-200 border border-zinc-800 hover:border-red-500/50 transition">+ 2-Look OLL</button>
+            <button id="btn-drill-preset-pll" type="button" class="px-2 py-1 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-200 border border-zinc-800 hover:border-red-500/50 transition">+ 2-Look PLL</button>
+            <button id="btn-drill-preset-unlearned" type="button" class="px-2 py-1 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-200 border border-zinc-800 hover:border-red-500/50 transition">Só não aprendidos</button>
+            <button id="btn-drill-preset-clear" type="button" class="px-2 py-1 rounded-lg text-[11px] font-semibold bg-red-500/10 text-red-400 border border-red-500/30 transition">Limpar</button>
+          </div>
+          <div id="tr-drill-pool-pills" class="bg-black border border-zinc-800 rounded-xl p-2.5 flex flex-wrap gap-1.5 max-h-48 overflow-y-auto scrollbar-thin"></div>
+          <p class="text-[11px] text-zinc-500 leading-relaxed">Conecte seu cubo em <strong>Cubo BT</strong>. O cubo 3D mostra o caso e acompanha seus giros; ao resolver o caso, avança automaticamente.</p>
+        </div>
+
         <button id="btn-tr-start" type="button" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold text-sm transition red-glow">▶ Iniciar Sessão</button>
       </div>
 
@@ -629,6 +678,8 @@
           </div>
           <div class="flex items-center gap-2">
             <span id="tr-feedback-pill" class="text-xs font-semibold px-3 py-1 rounded-full bg-[#121217] text-zinc-300 border border-zinc-800">Aguardando início</span>
+            <button id="btn-tr-drill-reset" type="button" class="hidden px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 transition">↺ Resetar Caso</button>
+            <button id="btn-tr-drill-next" type="button" class="hidden px-2.5 py-1.5 rounded-lg text-xs font-medium bg-red-600 hover:bg-red-500 text-white transition">⏭ Próximo</button>
             <button id="btn-tr-peek" type="button" class="px-3 py-1.5 rounded-lg text-xs font-medium bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 transition">↻ Girar 180°</button>
           </div>
         </div>
@@ -2479,13 +2530,19 @@ function setTrainerMode(mode) {
   const off = 'px-2 py-1.5 rounded-lg text-[11px] font-semibold text-zinc-400 hover:text-white transition';
   const on = 'px-2 py-1.5 rounded-lg text-[11px] font-semibold bg-red-600 text-white transition';
   document.getElementById('btn-tr-mode-recon').className = mode === 'recon' ? on : off;
+  document.getElementById('btn-tr-mode-drill').className = mode === 'drill' ? on : off;
   document.getElementById('btn-tr-mode-escape').className = mode === 'escape' ? on : off;
   document.getElementById('btn-tr-mode-f2l').className = mode === 'f2l' ? on : off;
   document.getElementById('tr-pool-recon-wrap').classList.toggle('hidden', mode !== 'recon');
+  document.getElementById('tr-pool-drill-wrap').classList.toggle('hidden', mode !== 'drill');
+  document.getElementById('tr-pool-drill-wrap').classList.toggle('flex', mode === 'drill');
   document.getElementById('tr-pool-escape-wrap').classList.toggle('hidden', mode !== 'escape');
   document.getElementById('tr-pool-escape-wrap').classList.toggle('flex', mode === 'escape');
   document.getElementById('tr-pool-f2l-wrap').classList.toggle('hidden', mode !== 'f2l');
   document.getElementById('tr-pool-f2l-wrap').classList.toggle('flex', mode === 'f2l');
+  document.getElementById('btn-tr-drill-reset').classList.toggle('hidden', mode !== 'drill');
+  document.getElementById('btn-tr-drill-next').classList.toggle('hidden', mode !== 'drill');
+  if (mode === 'drill') renderDrillPoolPills();
   updateTrainerPoolButtons();
 }
 
@@ -2965,7 +3022,7 @@ function startRunningTimer(){
   if(tmInspInterval){clearInterval(tmInspInterval);tmInspInterval=null;}stopVoice();tmState='running';tmStartPerf=performance.now();
   const d=document.getElementById('tm-display'),l=document.getElementById('tm-status-label');
   d.className='mono text-6xl sm:text-7xl xl:text-8xl font-bold tracking-tight text-white';l.textContent='Resolvendo...';
-  const tick=()=>{if(tmState!=='running')return;const s=(performance.now()-tmStartPerf)/1000;d.textContent=s>=60?`${Math.floor(s/60)}:${(s%60).toFixed(2).padStart(5,'0')}`:s.toFixed(2);tmRaf=requestAnimationFrame(tick);};
+  const tick=()=>{if(tmState!=='running')return;const s=(performance.now()-tmStartPerf)/1000;d.textContent=s>=60?`${Math.floor(s/60)}:${(s%60).toFixed(2).padStart(5,'0')}`:s.toFixed(2);if(btConn&&btSolveMoves>0){const tp=document.getElementById('tm-bt-tps');if(tp)tp.textContent=(btSolveMoves/Math.max(0.1,s)).toFixed(1)+' TPS';}tmRaf=requestAnimationFrame(tick);};
   tmRaf=requestAnimationFrame(tick);
 }
 function stopRunningTimer(){
@@ -3002,7 +3059,7 @@ function switchView(viewName) {
   stopPlayback();
   activeView = viewName;
 
-  const views = { animator:'flex', academy:'flex', timer:'grid', guide:'flex', trainer:'grid', scrambles:'grid', stats:'flex', diag:'grid' };
+  const views = { animator:'flex', academy:'flex', timer:'grid', guide:'flex', assoc:'flex', trainer:'grid', scrambles:'grid', stats:'flex', diag:'grid' };
   Object.entries(views).forEach(([vn, disp]) => {
     const el = document.getElementById('view-' + vn);
     if (!el) return;
@@ -3033,6 +3090,7 @@ function switchView(viewName) {
     clearArrowsAndGlow();
     handsGroup.visible = false;
     if (viewName === 'guide') renderRecognitionGuide();
+    else if (viewName === 'assoc') renderAssocView();
     else if (viewName === 'scrambles') { renderScramblePicker(); if (!scGenerated.length) generateScrambles(); }
     else if (viewName === 'stats') renderStatsView();
     else if (viewName === 'diag') renderDiagNet();
@@ -3325,6 +3383,7 @@ document.querySelectorAll('.guide-cat-btn').forEach(b => b.addEventListener('cli
 
 // Trainer listeners
 document.getElementById('btn-tr-mode-recon').addEventListener('click', () => setTrainerMode('recon'));
+document.getElementById('btn-tr-mode-drill').addEventListener('click', () => setTrainerMode('drill'));
 document.getElementById('btn-tr-mode-escape').addEventListener('click', () => setTrainerMode('escape'));
 document.getElementById('btn-tr-mode-f2l').addEventListener('click', () => setTrainerMode('f2l'));
 document.getElementById('btn-f2l-orient').addEventListener('click', () => {
@@ -3420,14 +3479,14 @@ document.getElementById('btn-unlock-profile').addEventListener('click', () => {
   else err.classList.remove('hidden');
 });
 document.getElementById('btn-backup-export').addEventListener('click', () => {
-  const p={version:1,exportedAt:new Date().toISOString(),profileName:getProfileName(),pin:getSavedPin(),stats:loadStats(),learned:[...learnedIds],pool:{recon:[...trSelectedIds],escape:[...trEscapeSelectedIds]},timer:tmData};
+  const p={version:1,exportedAt:new Date().toISOString(),profileName:getProfileName(),pin:getSavedPin(),stats:loadStats(),learned:[...learnedIds],notes:loadAlgNotes(),pool:{recon:[...trSelectedIds],escape:[...trEscapeSelectedIds]},timer:tmData};
   const u=URL.createObjectURL(new Blob([JSON.stringify(p,null,2)],{type:'application/json'})),a=document.createElement('a');
   a.href=u; a.download=`${(p.profileName||'cfop_coach').toLowerCase().replace(/[^a-z0-9_-]/g,'_')}_backup.json`; a.click();
 });
 document.getElementById('input-backup-import').addEventListener('change', e => {
   const f=e.target.files?.[0]; if(!f)return;
   const rd=new FileReader();
-  rd.onload=ev=>{try{const d=JSON.parse(String(ev.target.result||'{}'));if(typeof d.profileName==='string')setProfileName(d.profileName);if(typeof d.pin==='string')setSavedPin(d.pin);if(d.stats&&Array.isArray(d.stats.records))saveStats(d.stats);if(Array.isArray(d.learned)){learnedIds=new Set(d.learned);saveLearned();}if(d.pool){if(d.pool.recon?.length)trSelectedIds=new Set(d.pool.recon);if(d.pool.escape?.length)trEscapeSelectedIds=new Set(d.pool.escape);savePoolSelection();}if(d.timer?.sessions){tmData=d.timer;saveTmData();if(tmInitialized){renderTimerSessions();renderTimerStatsAndList();}}isGuestMode=false;renderAlgButtons();updateTrainerPoolButtons();renderStatsView();}catch(err){}e.target.value='';};
+  rd.onload=ev=>{try{const d=JSON.parse(String(ev.target.result||'{}'));if(typeof d.profileName==='string')setProfileName(d.profileName);if(typeof d.pin==='string')setSavedPin(d.pin);if(d.stats&&Array.isArray(d.stats.records))saveStats(d.stats);if(Array.isArray(d.learned)){learnedIds=new Set(d.learned);saveLearned();}if(d.notes&&typeof d.notes==='object'){saveAlgNotes(d.notes);}if(d.pool){if(d.pool.recon?.length)trSelectedIds=new Set(d.pool.recon);if(d.pool.escape?.length)trEscapeSelectedIds=new Set(d.pool.escape);savePoolSelection();}if(d.timer?.sessions){tmData=d.timer;saveTmData();if(tmInitialized){renderTimerSessions();renderTimerStatsAndList();}}isGuestMode=false;renderAlgButtons();updateTrainerPoolButtons();renderStatsView();}catch(err){}e.target.value='';};
   rd.readAsText(f);
 });
 document.querySelectorAll('.st-filter-btn').forEach(b=>b.addEventListener('click',()=>{statsFilter=b.getAttribute('data-stfilter');document.querySelectorAll('.st-filter-btn').forEach(x=>x.className=x.getAttribute('data-stfilter')===statsFilter?'st-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white transition':'st-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 transition');renderStatsView();}));
@@ -3470,8 +3529,46 @@ window.addEventListener('resize', resizeRendererToHost);
 
 // Main Render Loop (with 3D Hands Finger-Trick Animation + Color-Matched Glow)
 function easeInOutCubic(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+let btTargetGyroQuat = null;
+const btMoveQueue = [];
+function enqueueBtMove(mv) {
+  if (!mv) return;
+  if (btMoveQueue.length >= 3) {
+    cancelActiveAnim();
+    while (btMoveQueue.length > 0) applyMoveInstant(btMoveQueue.shift());
+    applyMoveInstant(mv);
+    return;
+  }
+  if (!animState) {
+    animateMoveBtFast(mv);
+  } else {
+    btMoveQueue.push(mv);
+  }
+}
+function animateMoveBtFast(token) {
+  const { axis, angle, filter } = parseMove(token);
+  const active = cubies.filter(c => filter(c.position));
+  pivot.rotation.set(0, 0, 0);
+  pivot.updateMatrixWorld();
+  active.forEach(c => pivot.attach(c));
+  animState = {
+    activeCubies: active,
+    axis,
+    targetAngle: angle,
+    startTime: performance.now(),
+    duration: token.endsWith('2') ? 85 : 60,
+    fingerSpec: null,
+    onComplete: () => {
+      if (btMoveQueue.length > 0) animateMoveBtFast(btMoveQueue.shift());
+    }
+  };
+}
+
 function animate(now) {
   requestAnimationFrame(animate);
+  if (btTargetGyroQuat && btConn && document.getElementById('bt-opt-gyro')?.checked && (activeView === 'animator' || (activeView === 'trainer' && trMode === 'drill'))) {
+    cubeRoot.quaternion.slerp(btTargetGyroQuat, 0.35);
+  }
   if (animState) {
     const t = Math.min(1, (now - animState.startTime) / animState.duration);
     const e = easeInOutCubic(t);
@@ -3651,8 +3748,11 @@ function handleGanEvent(ev) {
     btFacelets = btApplyMoveFacelets(btFacelets, mv);
 
     if (activeView === 'animator' && document.getElementById('bt-opt-mirror').checked) {
-      applyMoveInstant(mv);
-      refreshPieceHighlightsAndArrows();
+      enqueueBtMove(mv);
+    }
+
+    if (activeView === 'trainer' && trMode === 'drill' && trRunning) {
+      handleDrillMove(mv);
     }
 
     if (activeView === 'timer' && document.getElementById('bt-opt-timer').checked) {
@@ -3671,10 +3771,9 @@ function handleGanEvent(ev) {
   } else if (ev.type === 'GYRO' && ev.quaternion) {
     const q = ev.quaternion;
     const rawQ = new THREE.Quaternion(q.x, q.z, -q.y, q.w).normalize();
+    if (!btLastGyroQuat) btGyroOffset.copy(rawQ).invert();
     btLastGyroQuat = rawQ;
-    if (activeView === 'animator' && document.getElementById('bt-opt-gyro').checked) {
-      cubeRoot.quaternion.copy(btGyroOffset).multiply(rawQ);
-    }
+    btTargetGyroQuat = new THREE.Quaternion().copy(btGyroOffset).multiply(rawQ);
   } else if (ev.type === 'DISCONNECT') {
     disconnectGanCube();
   }
@@ -3762,6 +3861,345 @@ document.getElementById('btn-bt-reset-state').addEventListener('click', async ()
   btFacelets = 'UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB'.split('');
   if (btConn) { try { await btConn.sendCubeCommand({ type: 'REQUEST_RESET' }); } catch (e) {} }
 });
+
+
+// ============================================================
+// 12. ASSOCIAÇÕES (2D CASE DIAGRAM + ALG + PERSONAL NOTES)
+// ============================================================
+const ALG_NOTES_KEY = 'cfop_coach_alg_notes_v1';
+function loadAlgNotes() {
+  try { return JSON.parse(localStorage.getItem(ALG_NOTES_KEY) || '{}') || {}; } catch (e) { return {}; }
+}
+function saveAlgNotes(obj) {
+  try { localStorage.setItem(ALG_NOTES_KEY, JSON.stringify(obj)); } catch (e) {}
+}
+
+let assocCat = '2look-oll';
+let assocOnlyNotes = false;
+let assocSearch = '';
+
+function makeDynamicCaseSvg(alg) {
+  const gMatch = [...(GUIDE_DATA.oll?.items || []), ...(GUIDE_DATA.pll?.items || []), ...(GUIDE_DATA.f2l?.items || [])].find(x => x.algId === alg.id);
+  if (gMatch && gMatch.svg) return gMatch.svg;
+
+  const invSeq = [...alg.moves].reverse().map(invertToken).join(' ');
+  const st = applySeq54(makeSolved54(), invSeq);
+
+  if (alg.cat === '2look-oll' || alg.cat === 'full-oll') {
+    const uMask = st.slice(0, 9).map(c => c === 'Y' ? 'Y' : '.').join('');
+    const fMask = st.slice(18, 21).map(c => c === 'Y' ? 'Y' : '.').join('');
+    const rMask = [st[11], st[10], st[9]].map(c => c === 'Y' ? 'Y' : '.').join('');
+    const bMask = [st[47], st[46], st[45]].map(c => c === 'Y' ? 'Y' : '.').join('');
+    const lMask = [st[36], st[37], st[38]].map(c => c === 'Y' ? 'Y' : '.').join('');
+    return makeOllMiniSvg(uMask, fMask, rMask, bMask, lMask);
+  }
+  if (alg.cat === '2look-pll' || alg.cat === 'full-pll') {
+    const fC = st.slice(18, 21);
+    const rC = [st[11], st[10], st[9]];
+    const bC = [st[47], st[46], st[45]];
+    const lC = [st[36], st[37], st[38]];
+    return makePllMiniSvg(fC, rC, bC, lC, '');
+  }
+  const mapCol = ch => DIAG_COLORS[ch]?.bg || '#27272A';
+  const obj = {};
+  for (let i = 0; i < 9; i++) obj['u' + i] = mapCol(st[i]);
+  for (let i = 0; i < 9; i++) obj['f' + i] = mapCol(st[18 + i]);
+  for (let i = 0; i < 9; i++) obj['r' + i] = mapCol(st[9 + i]);
+  return makeF2lMiniSvg(obj);
+}
+
+function renderAssocView() {
+  const listEl = document.getElementById('assoc-list');
+  if (!listEl) return;
+  const notes = loadAlgNotes();
+  const q = assocSearch.trim().toLowerCase();
+
+  const items = ALGORITHMS.filter(a => {
+    if (a.cat === 'triggers') return false;
+    if (assocCat !== 'all' && a.cat !== assocCat) return false;
+    const noteText = (notes[a.id] || '').toLowerCase();
+    if (assocOnlyNotes && !noteText.trim()) return false;
+    if (q) {
+      const mStr = a.moves.join(' ').toLowerCase();
+      return a.name.toLowerCase().includes(q) || mStr.includes(q) || noteText.includes(q);
+    }
+    return true;
+  });
+
+  listEl.innerHTML = '';
+  if (!items.length) {
+    listEl.innerHTML = '<div class="col-span-full rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-8 text-center text-sm text-zinc-500">Nenhum caso encontrado para este filtro.</div>';
+    return;
+  }
+
+  items.forEach(a => {
+    const savedPref = getSavedAltIdx(a.id);
+    const activeMoves = (a.alts && a.alts[savedPref]) ? a.alts[savedPref].moves : a.moves;
+    const card = document.createElement('div');
+    card.className = 'rounded-2xl bg-[#0A0A0D] border border-zinc-800 p-4 flex flex-col sm:flex-row items-start gap-3.5 hover:border-zinc-700 transition';
+    card.innerHTML = `
+      <div class="flex items-center gap-3 shrink-0">
+        ${makeDynamicCaseSvg(a)}
+      </div>
+      <div class="flex-1 min-w-0 w-full flex flex-col gap-2">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="font-bold text-white text-sm truncate">${a.name}</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-500/15 text-red-400 border border-red-500/30">${a.badge}</span>
+          </div>
+          <button type="button" class="assoc-open-3d px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#121217] hover:bg-red-600 text-zinc-300 hover:text-white border border-zinc-700 transition">Ver 3D →</button>
+        </div>
+        <code class="mono text-xs sm:text-sm text-red-400 bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 block break-words">${activeMoves.join(' ')}</code>
+        <textarea rows="2" placeholder="Comentário / gatilho visual (ex: barra atrás, começa com r sexy...)" class="assoc-note-input w-full bg-black border border-zinc-800 rounded-lg px-2.5 py-1.5 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-red-500 resize-y"></textarea>
+      </div>
+    `;
+    const ta = card.querySelector('.assoc-note-input');
+    ta.value = notes[a.id] || '';
+    ta.addEventListener('input', () => {
+      const cur = loadAlgNotes();
+      cur[a.id] = ta.value;
+      saveAlgNotes(cur);
+    });
+    card.querySelector('.assoc-open-3d').addEventListener('click', () => openAlgInVisualizer(a.id));
+    listEl.appendChild(card);
+  });
+}
+
+document.querySelectorAll('.assoc-cat-btn').forEach(b => b.addEventListener('click', () => {
+  assocCat = b.getAttribute('data-acat');
+  document.querySelectorAll('.assoc-cat-btn').forEach(x => {
+    const on = x.getAttribute('data-acat') === assocCat;
+    x.className = on
+      ? 'assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-red-600 text-white red-glow transition'
+      : 'assoc-cat-btn px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition';
+  });
+  renderAssocView();
+}));
+document.getElementById('assoc-search').addEventListener('input', e => { assocSearch = e.target.value; renderAssocView(); });
+document.getElementById('btn-assoc-only-notes').addEventListener('click', e => {
+  assocOnlyNotes = !assocOnlyNotes;
+  e.target.className = assocOnlyNotes
+    ? 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-600 text-white transition'
+    : 'px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 hover:border-zinc-600 transition';
+  renderAssocView();
+});
+
+// ============================================================
+// 13. CUBESTATION-STYLE SMART CUBE ALGORITHM DRILL (TRAINER)
+// ============================================================
+const DRILL_POOL_KEY = 'cfop_coach_drill_pool_v1';
+let drillPoolIds = new Set(['sune', 'antisune', 't-oll', 'l-oll', 'jb', 'ua-m']);
+try {
+  const sp = JSON.parse(localStorage.getItem(DRILL_POOL_KEY) || 'null');
+  if (Array.isArray(sp) && sp.length) drillPoolIds = new Set(sp);
+} catch (e) {}
+function saveDrillPool() { try { localStorage.setItem(DRILL_POOL_KEY, JSON.stringify([...drillPoolIds])); } catch (e) {} }
+
+let drillRandomOrder = true;
+let drillShowHint = false;
+let drillSeqIdx = 0;
+let drillActiveAlg = null;
+let drillState54 = makeSolved54();
+let drillMoveCount = 0;
+let drillCaseStarted = false;
+let drillStartPerf = 0;
+let drillAdvancing = false;
+
+function renderDrillPoolPills() {
+  const wrap = document.getElementById('tr-drill-pool-pills');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  const eligible = ALGORITHMS.filter(a => a.cat === '2look-oll' || a.cat === '2look-pll' || a.cat === 'full-oll' || a.cat === 'full-pll');
+  eligible.forEach(a => {
+    const on = drillPoolIds.has(a.id);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = on
+      ? 'px-2 py-1 rounded-md text-[11px] font-semibold bg-red-600 text-white transition'
+      : 'px-2 py-1 rounded-md text-[11px] font-medium bg-[#121217] text-zinc-400 border border-zinc-800 hover:text-zinc-200 transition';
+    btn.textContent = a.name.replace(' (Adjacentes)', '').replace(' (Diagonal)', '');
+    btn.addEventListener('click', () => {
+      if (drillPoolIds.has(a.id)) drillPoolIds.delete(a.id);
+      else drillPoolIds.add(a.id);
+      saveDrillPool();
+      renderDrillPoolPills();
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function isDrillCaseSolved() {
+  if (!drillActiveAlg) return false;
+  const f2lOk =
+    drillState54.slice(27, 36).every(x => x === 'W') &&
+    drillState54.slice(21, 27).every(x => x === 'G') &&
+    drillState54.slice(12, 18).every(x => x === 'R') &&
+    drillState54.slice(48, 54).every(x => x === 'B') &&
+    drillState54.slice(39, 45).every(x => x === 'O');
+  if (!f2lOk) return false;
+
+  if (drillActiveAlg.cat === '2look-oll' || drillActiveAlg.cat === 'full-oll') {
+    return drillState54.slice(0, 9).every(x => x === 'Y');
+  }
+  const uOk = drillState54.slice(0, 9).every(x => x === 'Y');
+  const fOk = drillState54[18] === drillState54[19] && drillState54[19] === drillState54[20];
+  const rOk = drillState54[9] === drillState54[10] && drillState54[10] === drillState54[11];
+  const bOk = drillState54[45] === drillState54[46] && drillState54[46] === drillState54[47];
+  const lOk = drillState54[36] === drillState54[37] && drillState54[37] === drillState54[38];
+  return uOk && fOk && rOk && bOk && lOk;
+}
+
+function loadNextDrillCase() {
+  drillAdvancing = false;
+  const eligible = ALGORITHMS.filter(a => drillPoolIds.has(a.id));
+  if (!eligible.length) {
+    document.getElementById('tr-feedback-pill').textContent = 'Selecione ao menos 1 caso no pool';
+    return;
+  }
+  if (drillRandomOrder) {
+    let pick = eligible[Math.floor(Math.random() * eligible.length)];
+    if (eligible.length > 1 && drillActiveAlg && pick.id === drillActiveAlg.id) {
+      pick = eligible[(eligible.indexOf(pick) + 1) % eligible.length];
+    }
+    drillActiveAlg = pick;
+  } else {
+    drillActiveAlg = eligible[drillSeqIdx % eligible.length];
+    drillSeqIdx = (drillSeqIdx + 1) % eligible.length;
+  }
+
+  const savedPref = getSavedAltIdx(drillActiveAlg.id);
+  const mvs = (drillActiveAlg.alts && drillActiveAlg.alts[savedPref]) ? drillActiveAlg.alts[savedPref].moves : drillActiveAlg.moves;
+  const setupMoves = [...mvs].reverse().map(invertToken);
+
+  cancelActiveAnim();
+  buildSolvedCube();
+  setupMoves.forEach(applyMoveInstant);
+  drillState54 = applySeq54(makeSolved54(), setupMoves.join(' '));
+  drillMoveCount = 0;
+  drillCaseStarted = false;
+
+  document.getElementById('tr-case-timer').textContent = '0.00s';
+  document.getElementById('tr-question-label').textContent = drillShowHint
+    ? `${drillActiveAlg.name} — ${mvs.join(' ')}`
+    : 'Execute o algoritmo no seu cubo Bluetooth (ou use os botões abaixo)';
+  document.getElementById('tr-feedback-pill').textContent = btConn ? 'Aguardando 1º giro no GAN' : 'Modo manual / conecte GAN BT';
+
+  const grid = document.getElementById('tr-options-grid');
+  grid.innerHTML = `
+    <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-400">
+      <span>Movimentos: <strong id="drill-mv-count" class="mono text-white">0</strong> · TPS: <strong id="drill-tps" class="mono text-red-400">0.0</strong></span>
+      <span class="mono text-zinc-500">${drillShowHint ? mvs.join(' ') : 'Modo cego ativo'}</span>
+    </div>
+    <div class="flex flex-wrap gap-1.5">
+      ${['R',"R'",'U',"U'",'U2','F',"F'",'L',"L'",'M',"M'",'M2','r',"r'",'f',"f'"].map(t => `<button type="button" data-dmv="${t}" class="drill-sim-btn px-2.5 py-1.5 rounded-lg text-xs mono font-semibold bg-[#121217] hover:bg-zinc-800 text-zinc-200 border border-zinc-800 transition">${t}</button>`).join('')}
+    </div>`;
+  grid.querySelectorAll('.drill-sim-btn').forEach(b => b.addEventListener('click', () => {
+    if (trRunning && trMode === 'drill') handleDrillMove(b.getAttribute('data-dmv'));
+  }));
+}
+
+function handleDrillMove(mv) {
+  if (!trRunning || trMode !== 'drill' || drillAdvancing || !drillActiveAlg) return;
+  if (!drillCaseStarted) {
+    drillCaseStarted = true;
+    drillStartPerf = performance.now();
+  }
+  drillMoveCount++;
+  enqueueBtMove(mv);
+  drillState54 = applySeq54(drillState54, mv);
+
+  const elapsedMs = performance.now() - drillStartPerf;
+  const mvEl = document.getElementById('drill-mv-count');
+  const tpEl = document.getElementById('drill-tps');
+  if (mvEl) mvEl.textContent = String(drillMoveCount);
+  if (tpEl) tpEl.textContent = (drillMoveCount / Math.max(0.1, elapsedMs / 1000)).toFixed(1);
+
+  if (isDrillCaseSolved()) {
+    drillAdvancing = true;
+    const tps = (drillMoveCount / Math.max(0.1, elapsedMs / 1000)).toFixed(1);
+    const pill = document.getElementById('tr-feedback-pill');
+    pill.textContent = `✓ ${drillActiveAlg.name} · ${fmtSec(elapsedMs)} (${tps} TPS)`;
+    pill.className = 'text-xs font-semibold px-3 py-1 rounded-full bg-green-500/20 text-green-400 border border-green-500/40';
+    const card = document.getElementById('trainer-stage-card');
+    card.classList.remove('flash-ok', 'flash-err'); void card.offsetWidth; card.classList.add('flash-ok');
+
+    const rec = { ts: Date.now(), caseId: drillActiveAlg.id, caseName: drillActiveAlg.name, type: drillActiveAlg.cat.includes('pll') ? 'pll' : 'oll', correct: true, ms: Math.round(elapsedMs) };
+    trSessionRecords.push(rec);
+    if (!isGuestMode) { const db = loadStats(); db.records.push(rec); saveStats(db); }
+    updateTrainerSessionUI();
+
+    setTimeout(() => {
+      if (trRunning && trMode === 'drill') {
+        pill.className = 'text-xs font-semibold px-3 py-1 rounded-full bg-[#121217] text-zinc-300 border border-zinc-800';
+        loadNextDrillCase();
+      }
+    }, 450);
+  }
+}
+
+document.getElementById('btn-drill-order').addEventListener('click', e => {
+  drillRandomOrder = !drillRandomOrder;
+  e.target.textContent = drillRandomOrder ? '🔀 Aleatória' : '🔢 Em Ordem';
+});
+document.getElementById('btn-drill-hint').addEventListener('click', e => {
+  drillShowHint = !drillShowHint;
+  e.target.textContent = drillShowHint ? 'Visível' : 'Oculto (Cego)';
+  e.target.className = drillShowHint
+    ? 'px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-red-500/15 text-red-400 border border-red-500/40 transition'
+    : 'px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-[#121217] text-zinc-300 border border-zinc-800 transition';
+});
+document.getElementById('btn-drill-preset-oll').addEventListener('click', () => {
+  ALGORITHMS.filter(a => a.cat === '2look-oll').forEach(a => drillPoolIds.add(a.id));
+  saveDrillPool(); renderDrillPoolPills();
+});
+document.getElementById('btn-drill-preset-pll').addEventListener('click', () => {
+  ALGORITHMS.filter(a => a.cat === '2look-pll').forEach(a => drillPoolIds.add(a.id));
+  saveDrillPool(); renderDrillPoolPills();
+});
+document.getElementById('btn-drill-preset-unlearned').addEventListener('click', () => {
+  drillPoolIds = new Set(ALGORITHMS.filter(a => (a.cat === '2look-oll' || a.cat === '2look-pll') && !learnedIds.has(a.id)).map(a => a.id));
+  saveDrillPool(); renderDrillPoolPills();
+});
+document.getElementById('btn-drill-preset-clear').addEventListener('click', () => {
+  drillPoolIds = new Set(); saveDrillPool(); renderDrillPoolPills();
+});
+document.getElementById('btn-tr-drill-reset').addEventListener('click', () => {
+  if (trMode === 'drill') loadNextDrillCase();
+});
+document.getElementById('btn-tr-drill-next').addEventListener('click', () => {
+  if (trMode === 'drill') loadNextDrillCase();
+});
+
+const _origStartTrainerSession = startTrainerSession;
+startTrainerSession = function() {
+  if (trMode === 'drill') {
+    if (trRunning) { stopTrainerSession(false); return; }
+    if (!drillPoolIds.size) {
+      document.getElementById('tr-feedback-pill').textContent = 'Selecione casos para o Drill';
+      return;
+    }
+    trDurationSec = Math.max(10, Math.min(600, parseInt(document.getElementById('tr-duration-input').value, 10) || 60));
+    trRunning = true;
+    trSessionRecords = [];
+    trEndTime = performance.now() + trDurationSec * 1000;
+    drillSeqIdx = 0;
+    document.getElementById('tr-summary-banner').classList.add('hidden');
+    document.getElementById('btn-tr-start').textContent = '■ Encerrar Drill';
+    updateTrainerSessionUI();
+    loadNextDrillCase();
+    trCountdownInterval = setInterval(() => {
+      const now = performance.now(), rem = Math.max(0, (trEndTime - now) / 1000);
+      document.getElementById('tr-countdown').textContent = rem.toFixed(1) + 's';
+      document.getElementById('tr-progress-bar').style.width = ((rem / trDurationSec) * 100) + '%';
+      if (drillCaseStarted && !drillAdvancing) {
+        document.getElementById('tr-case-timer').textContent = ((now - drillStartPerf) / 1000).toFixed(2) + 's';
+      }
+      if (rem <= 0) stopTrainerSession(true);
+    }, 50);
+    return;
+  }
+  _origStartTrainerSession();
+};
 
 // Init
 updateProfileUI();
